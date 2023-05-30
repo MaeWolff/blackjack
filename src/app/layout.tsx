@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col items-center justify-between bg-red-100 py-16">
+      <body className="flex min-h-screen flex-col items-center justify-between bg-[#FEE6DB] py-4 md:py-16">
         <h1 className="text-center text-xl font-extrabold leading-5 text-red-500">
           Black <br />
           Jack
