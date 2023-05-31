@@ -1,7 +1,7 @@
 "use client";
 import Card, { InitialCard } from "@/components/Card";
 import deck from "@/entities/deck-of-cards";
-import type { Card as CardType } from "@/entities/types";
+import type { Card as CardType, GameStatus } from "@/entities/types";
 import {
   MAP_VALUE_TO_SCORE,
   calculateWinner,
@@ -14,9 +14,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   // GAME
   const [currentDeck, setCurrentDeck] = useState(deck);
-  const [gameState, setGameState] = useState<
-    "initial" | "started" | "dealerTurn" | "finished"
-  >("initial");
+  const [gameStatus, setGameStatus] = useState<GameStatus>("initial");
 
   // DEALER
   const [dealerDeck, setDealerDeck] = useState<[] | CardType[]>([]);
@@ -45,12 +43,12 @@ export default function Home() {
     ]);
     setCurrentDeck(newDeck);
 
-    if (myScore >= 21) setGameState("finished");
-    setGameState("started");
+    if (myScore >= 21) setGameStatus("finished");
+    setGameStatus("started");
   }
 
   function handleHit() {
-    if (myScore >= 21) setGameState("finished");
+    if (myScore >= 21) setGameStatus("finished");
     const randomCardIndex = drawRandomCardIndex();
 
     setMyDeck((oldCards) => [...oldCards, currentDeck[randomCardIndex]]);
@@ -60,7 +58,7 @@ export default function Home() {
   }
 
   function handleStand() {
-    setGameState("dealerTurn");
+    setGameStatus("dealerTurn");
   }
 
   function handlePlayAgain() {
@@ -68,7 +66,7 @@ export default function Home() {
     setMyDeck([]);
     setDealerScore(0);
     setMyScore(0);
-    setGameState("initial");
+    setGameStatus("initial");
     setCurrentDeck(deck);
   }
 
@@ -93,7 +91,7 @@ export default function Home() {
   }, [myDeck]);
 
   useEffect(() => {
-    if (dealerScore < 17 && gameState === "dealerTurn") {
+    if (dealerScore < 17 && gameStatus === "dealerTurn") {
       const randomCardIndex = drawRandomCardIndex();
       const newCard = currentDeck[randomCardIndex];
 
@@ -107,9 +105,9 @@ export default function Home() {
       );
     }
 
-    if (dealerScore >= 17) return setGameState("finished");
+    if (dealerScore >= 17) return setGameStatus("finished");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dealerScore, gameState]);
+  }, [dealerScore, gameStatus]);
 
   return (
     <main className="flex w-full flex-col items-center gap-16 p-8">
@@ -117,7 +115,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-2">
           <p className="text-red-500">Dealer ({dealerScore})</p>
           <div className="flex flex-row gap-2">
-            {gameState === "initial" && <InitialCard />}
+            {gameStatus === "initial" && <InitialCard />}
 
             {dealerDeck.map((card, i) => (
               <Card key={i} {...card} />
@@ -129,7 +127,7 @@ export default function Home() {
         <div
           className={clsx(
             "w-fit rounded-md bg-[#FED3C0] px-4 py-2 font-bold text-red-500",
-            { ["bg-transparent text-transparent"]: gameState !== "finished" }
+            { ["bg-transparent text-transparent"]: gameStatus !== "finished" }
           )}
         >
           {calculateWinner(dealerScore, myScore)}
@@ -138,7 +136,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-2">
           <p className="text-red-500">You ({myScore})</p>
           <div className="flex flex-row gap-2">
-            {gameState === "initial" && <InitialCard />}
+            {gameStatus === "initial" && <InitialCard />}
 
             {myDeck.map((card, i) => (
               <Card key={i} {...card} />
@@ -147,7 +145,7 @@ export default function Home() {
         </div>
       </div>
 
-      {gameState === "initial" && (
+      {gameStatus === "initial" && (
         <button
           className="rounded-md bg-red-500 px-4 py-2 text-white"
           onClick={handlePlayGame}
@@ -156,7 +154,7 @@ export default function Home() {
         </button>
       )}
 
-      {gameState === "started" && (
+      {gameStatus === "started" && (
         <div className="flex flex-row gap-2">
           <button
             className="rounded-md bg-red-500/60 px-4 py-2 text-white"
@@ -173,7 +171,7 @@ export default function Home() {
         </div>
       )}
 
-      {gameState === "finished" && (
+      {gameStatus === "finished" && (
         <button
           className="rounded-md bg-red-500 px-4 py-2 text-white"
           onClick={handlePlayAgain}
