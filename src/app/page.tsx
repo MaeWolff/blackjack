@@ -43,14 +43,13 @@ export default function Home() {
     ]);
     setCurrentDeck(newDeck);
 
-    if (myScore >= 21) setGameStatus("finished");
     setGameStatus("started");
   }
 
   function handleHit() {
-    if (myScore >= 21) setGameStatus("finished");
-    const randomCardIndex = drawRandomCardIndex();
+    if (myScore >= 21) setGameStatus("dealerTurn");
 
+    const randomCardIndex = drawRandomCardIndex();
     setMyDeck((oldCards) => [...oldCards, currentDeck[randomCardIndex]]);
 
     const newDeck = updateDeck(currentDeck, randomCardIndex);
