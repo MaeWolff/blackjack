@@ -9,9 +9,9 @@ export default function Card({ suit, value }: Card) {
   return (
     <div
       className={clsx(
-        "flex h-28 w-20 flex-col justify-between rounded-md bg-white p-2",
+        "flex h-28 w-20 flex-col justify-between rounded-md border-2 border-neutral-950 bg-white p-2",
         {
-          ["text-red-500"]: isRedCard,
+          ["border-red-500 text-red-500"]: isRedCard,
         }
       )}
     >
