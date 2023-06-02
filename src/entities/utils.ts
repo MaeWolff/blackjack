@@ -24,7 +24,7 @@ const MAP_VALUE_TO_SCORE: Record<Value, number> = {
   K: 10,
 };
 
-function drawRandomCardIndex(): number {
+function drawRandomCardIndex(deck: Card[]): number {
   return Math.floor(Math.random() * deck.length);
 }
 

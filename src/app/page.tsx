@@ -25,9 +25,9 @@ export default function Home() {
   const [myScore, setMyScore] = useState<number>(0);
 
   function handlePlayGame() {
-    const dealerCardIndex = drawRandomCardIndex();
-    const myCardIndex1 = drawRandomCardIndex();
-    const myCardIndex2 = drawRandomCardIndex();
+    const dealerCardIndex = drawRandomCardIndex(currentDeck);
+    const myCardIndex1 = drawRandomCardIndex(currentDeck);
+    const myCardIndex2 = drawRandomCardIndex(currentDeck);
 
     setDealerDeck((oldCards) => [...oldCards, currentDeck[dealerCardIndex]]);
     setMyDeck((oldCards) => [
@@ -49,7 +49,7 @@ export default function Home() {
   function handleHit() {
     if (myScore >= 21) setGameStatus("dealerTurn");
 
-    const randomCardIndex = drawRandomCardIndex();
+    const randomCardIndex = drawRandomCardIndex(currentDeck);
     setMyDeck((oldCards) => [...oldCards, currentDeck[randomCardIndex]]);
 
     const newDeck = updateDeck(currentDeck, randomCardIndex);
@@ -72,9 +72,7 @@ export default function Home() {
   useEffect(() => {
     let newDealerScore = 0;
     dealerDeck.forEach((card) => {
-      if (card.value) {
-        newDealerScore += MAP_VALUE_TO_SCORE[card.value];
-      }
+      newDealerScore += MAP_VALUE_TO_SCORE[card.value];
     });
     setDealerScore(newDealerScore);
   }, [dealerDeck]);
@@ -82,16 +80,14 @@ export default function Home() {
   useEffect(() => {
     let newMyScore = 0;
     myDeck.forEach((card) => {
-      if (card.value) {
-        newMyScore += MAP_VALUE_TO_SCORE[card.value];
-      }
+      newMyScore += MAP_VALUE_TO_SCORE[card.value];
     });
     setMyScore(newMyScore);
   }, [myDeck]);
 
   useEffect(() => {
     if (dealerScore < 17 && gameStatus === "dealerTurn") {
-      const randomCardIndex = drawRandomCardIndex();
+      const randomCardIndex = drawRandomCardIndex(currentDeck);
       const newCard = currentDeck[randomCardIndex];
 
       setDealerDeck((oldCards) => [...oldCards, newCard]);
@@ -107,6 +103,8 @@ export default function Home() {
     if (dealerScore >= 17) return setGameStatus("finished");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dealerScore, gameStatus]);
+
+  console.log(dealerDeck);
 
   return (
     <main className="flex w-full flex-col items-center gap-16 p-8">
