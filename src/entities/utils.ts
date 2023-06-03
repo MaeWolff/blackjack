@@ -28,18 +28,10 @@ function drawRandomCardIndex(deck: Card[]): number {
   return Math.floor(Math.random() * deck.length);
 }
 
-function removeCardsFromDeck(deck: Card[], cardIndex: number | number[]) {
-  if (typeof cardIndex === "number") return deck.splice(cardIndex, 1);
-  return cardIndex.map((i) => deck.splice(i, 1));
-}
-
-function updateDeck(
-  currentDeck: Card[],
-  cardIndexToDelete: number | number[]
-): Card[] {
-  const newDeck = [...currentDeck];
-  removeCardsFromDeck(newDeck, cardIndexToDelete);
-  return newDeck;
+function updateDeck(deck: Card[], cardIndex: number | number[]): Card[] {
+  const indices = Array.isArray(cardIndex) ? [...cardIndex] : [cardIndex];
+  const updatedDeck = [...deck].filter((_, index) => !indices.includes(index));
+  return updatedDeck;
 }
 
 enum ResultMessage {
@@ -68,7 +60,6 @@ export {
   MAP_SUIT_TO_SYMBOL,
   MAP_VALUE_TO_SCORE,
   drawRandomCardIndex,
-  removeCardsFromDeck,
   updateDeck,
   calculateWinner,
 };
