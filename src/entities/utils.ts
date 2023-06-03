@@ -34,8 +34,8 @@ function updateDeck(deck: Card[], cardIndex: number | number[]): Card[] {
   return updatedDeck;
 }
 
-enum ResultMessage {
-  win = "You Win !",
+export enum ResultMessage {
+  win = "You Win!",
   lose = "You lose",
   equality = "Push",
 }
