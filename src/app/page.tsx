@@ -104,8 +104,6 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dealerScore, gameStatus]);
 
-  console.log(dealerDeck);
-
   return (
     <main className="flex w-full flex-col items-center gap-16 p-8">
       <div className="flex min-h-[200px] w-full max-w-[600px] flex-col items-center justify-between gap-8 md:flex-row md:gap-0">
