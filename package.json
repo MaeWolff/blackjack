@@ -29,6 +29,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "17.2.1",
     "cypress": "12.13.0",
     "vitest": "0.31.3"
   }
